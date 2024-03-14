@@ -1,5 +1,7 @@
 # CLD-LABO
 
+[Labo RoadMap](https://heig-vd-ngy.gitbook.io/cld/cld/roadmap)
+
 ## AWS
 
 In this lab you will perform a number of tasks and document your
