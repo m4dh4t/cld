@@ -267,7 +267,7 @@ Host cld-srv-b
 
 * Observations ?
 
-```
+```text
 When changing the email address on the first instance, the change is reflected on the second one. This is due to the fact that both webapps are using the same RDS instance and thus the same database, where the user's information is stored.
 ```
 
@@ -275,6 +275,6 @@ When changing the email address on the first instance, the change is reflected o
 
 * Observations ?
 
-```
+```text
 When changing the profile picture on the first instance, the change is not reflected on the second one, and the server returns a 404 error when trying to load it. This is due to the fact that the profile picture is stored on the instance's file system and not in the database, and as a result it is not shared between the two instances.
 ```

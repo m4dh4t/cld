@@ -99,7 +99,7 @@ tail -n 15 /opt/bitnami/drupal/sites/default/settings.php
 
 ### Replace the current host with the RDS FQDN
 
-```
+```php
 //settings.php
 
 $databases['default']['default'] = array (
@@ -112,6 +112,7 @@ $databases['default']['default'] = array (
 ### [Create the Drupal Users on RDS Data base](https://mariadb.com/kb/en/create-user/)
 
 Note : only calls from both private subnets must be approved.
+
 * [By Password](https://mariadb.com/kb/en/create-user/#identified-by-password)
 * [Account Name](https://mariadb.com/kb/en/create-user/#account-names)
 * [Network Mask](https://cric.grenoble.cnrs.fr/Administrateurs/Outils/CalculMasque/)
