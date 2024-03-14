@@ -17,8 +17,7 @@ It was almost instantaneous.
 * Using the commands to explore the machine listed earlier, respond to
   the following questions and explain how you came to the answer:
 
-    * What's the difference between time here in Switzerland and the time set on
-      the machine?
+    * What's the difference between time here in Switzerland and the time set on the machine?
 
     ```
     Using `date` shows the time the machine is set to in UTC. As we are in UTC+1, the indicated time is one hour behind.
