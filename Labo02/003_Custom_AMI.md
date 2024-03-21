@@ -187,7 +187,7 @@ aws ec2 run-instances \
 * add tunnels for ssh and http pointing on the B Instance
 
 ```bash
-.ssh/config
+# .ssh/config
 
 Host cld-dmz
   HostName 15.188.43.46
@@ -205,6 +205,10 @@ Host cld-srv-b
   ProxyJump cld-dmz
   IdentityFile ~/.ssh/cld_drupal
   User bitnami
+```
+
+```bash
+ssh cld-srv-b
 ```
 
 ## Check SQL Accesses
@@ -244,6 +248,8 @@ MariaDB [(none)]>
 ### Check HTTP Accesses
 
 ```bash
+# .ssh/config
+
 Host cld-srv-a  
   HostName 10.0.15.10
   ProxyJump cld-dmz
@@ -257,6 +263,11 @@ Host cld-srv-b
   IdentityFile ~/.ssh/cld_drupal
   User bitnami
   LocalForward 8081 localhost:8080
+```
+
+```bash
+ssh cld-srv-a
+ssh cld-srv-b
 ```
 
 ### Read and write test through the web app
