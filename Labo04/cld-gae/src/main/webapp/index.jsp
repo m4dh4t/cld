@@ -17,6 +17,9 @@
     <tr>
       <td><a href='/hello'>Hello App Engine</a></td>
     </tr>
+    <tr>
+      <td><a href='/datastorewrite?_kind=book&_key=837094&author=John%20Steinbeck&title=The%20Grapes%20of%20Wrath'>Datastore Write</a></td>
+    </tr>
   </table>
 
 </body>
