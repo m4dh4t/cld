@@ -82,9 +82,9 @@ To develop and test the Servlet perform the following steps:
 Deliverables:
 
 ```
-//TODO - Commit and publish the servlet in your repo, in the 'labo4' directory.
+https://github.com/m4dh4t/cld/commit/f2bfd6b06b6f8400756e2ae15770a4415d77d11e
 ```
 
-```
-//TODO - Copy a screenshot of the local and the App Engine console with the Datastore Viewer.
-```
+![GCE Local Datastore](./img/GCE_DATASTORE_LOCAL.png)
+
+![GCE Datastore](./img/GCE_DATASTORE.png)
