@@ -99,3 +99,4 @@ detailed below. If you run into trouble, please consult the
 
 * [Task 001 - Deployment of a simple web application](001_SimpleWebAppDeployment.md)
 * [Task 002 - Deployment of a servlet](002_SimpleWebAppDeployment.md)
+* [Task 003 - Performances](003_DataStorePeformances.md)
