@@ -31,7 +31,7 @@ The Servlet shall work as follows:
   The field name becomes the property name and the field value the
   property value.
 
-- The Servlet should treat the fields named **\** and **\_key**
+- The Servlet should treat the fields named **\_kind** and **\_key**
   specially. The field **\_kind** shall indicate the kind of the
   entity. It is mandatory. The field **\_key** shall contain the key
   name of the entity. It is optional. If not present, the Servlet
