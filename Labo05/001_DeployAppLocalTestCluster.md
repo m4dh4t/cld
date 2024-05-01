@@ -181,6 +181,14 @@ Document any difficulties you faced and how you overcame them. Copy the object d
 // TODO object descriptions
 ```````
 
+```yaml
+# api-svc.yaml
+```
+
+```yaml
+# frontend-pod.yaml
+```
+
 > [!TIP]
 >
 > ### Troubleshooting

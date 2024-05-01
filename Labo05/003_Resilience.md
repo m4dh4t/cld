@@ -82,9 +82,9 @@ Load-test using Vegeta (500 requests should be enough).
 >   - ```yaml
 >     spec:
 >       containers:
->     			- ...
+>         - ...:
 >           env:
->             - ...
+>             - ...:
 >           resources:
 >             requests:
 >               cpu: 10m
@@ -100,3 +100,15 @@ Document your observations in the lab report. Document any difficulties you face
 ```````sh
 // TODO object descriptions
 ```````
+
+```yaml
+# redis-deploy.yaml
+```
+
+```yaml
+# api-deploy.yaml
+```
+
+```yaml
+# frontend-deploy.yaml
+```
