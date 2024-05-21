@@ -26,27 +26,57 @@ Validate the use of Amazon Comprehend for real-time social media monitoring to d
 
 //when -> a new tweet containing one of the keywords is posted
 
-//then -> the application's backend collects the tweet and sends it to Amazon Comprehend for analysis
+//then -> the application's backend collects the tweet and sends it to Amazon Comprehend for sentiment analysis
 ```
 
 ### STEP 02
 
 ```text
-//given -> the tweet is analyzed by Amazon Comprehend
+//given -> the tweet is sent to Amazon Comprehend
 
-//when -> the analysis results are available
+//when -> Amazon Comprehend performs sentiment analysis on the tweet
 
-//then -> the backend stores the results in the database and generates an alert if a negative sentiment is detected
+//then -> the backend stores the sentiment analysis results (positive, negative, neutral, or mixed) in the database
 ```
 
 ### STEP 03
+
+```text
+//given -> the sentiment analysis results are stored
+
+//when -> Amazon Comprehend performs entity recognition on the tweet
+
+//then -> the backend stores the recognized entities (e.g., locations, dates, organizations) in the database
+```
+
+### STEP 04
+
+```text
+//given -> the recognized entities are stored
+
+//when -> Amazon Comprehend performs key phrase extraction on the tweet
+
+//then -> the backend stores the extracted key phrases in the database
+```
+
+### STEP 05
+
+```text
+//given -> the tweet is fully analyzed with sentiment, entities, and key phrases
+
+//when -> the backend identifies a targeted negative sentiment with specific entities (e.g., organization name) and key phrases
+
+//then -> an alert is generated in the system
+```
+
+### STEP 06
 
 ```text
 //given -> an alert is generated
 
 //when -> the user accesses the user interface
 
-//then -> the user sees new trends, popular topics, and real-time alerts
+//then -> the user sees the new trends, popular topics, real-time alerts, and detailed insights including sentiment, entities, and key phrases
 ```
 
 ## Cost
