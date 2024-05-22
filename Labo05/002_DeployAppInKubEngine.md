@@ -71,6 +71,10 @@ Document any difficulties you faced and how you overcame them. Copy the object d
 // TODO object descriptions
 ```````
 
+```yaml
+# frontend-svc.yaml
+```
+
 Take a screenshot of the cluster details from the GKE console. Copy the output of the `kubectl describe` command to describe your load balancer once completely initialized.
 
 > // TODO
