@@ -1,0 +1,8 @@
+# Ignore provider binaries, which are platform-specific
+# These should be setup by running `terraform init`
+# The version will be deducted according to the lock file
+terraform/.terraform/providers/
+
+# Only publish the public key
+credentials/*
+!credentials/*.pub
