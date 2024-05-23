@@ -22,9 +22,17 @@ Verify that Ansible is installed correctly by running:
 ansible --version
 ```
 
-//TODO
 [OUTPUT]
 ```bash
+ansible [core 2.16.7]
+  config file = None
+  configured module search path = ['/Users/m4dh4t/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/local/Cellar/ansible/9.6.0/libexec/lib/python3.12/site-packages/ansible
+  ansible collection location = /Users/m4dh4t/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/local/bin/ansible
+  python version = 3.12.3 (main, Apr  9 2024, 08:09:14) [Clang 15.0.0 (clang-1500.3.9.4)] (/usr/local/Cellar/ansible/9.6.0/libexec/bin/python)
+  jinja version = 3.1.4
+  libyaml = True
 ```
 
 You should see output similar to the following:
