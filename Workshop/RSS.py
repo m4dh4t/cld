@@ -1,11 +1,18 @@
 import feedparser
+import newspaper
 import boto3
 import json
 
 # Configurations
-RSS_FEED_URL = "https://feeds.bbci.co.uk/news/world/rss.xml"
 AWS_REGION = "eu-central-1"
-KEYWORDS = ["Trump"]
+
+RSS_GNEWS_URL = "https://news.google.com/rss"
+RSS_GNEWS_SEARCH_URL = f"{RSS_GNEWS_URL}/search?q="
+
+KEYWORDS = ["Gaza"]
+LANGUAGES = ["US:en", "FR:fr", "DE:de"]
+MAX_ARTICLES = 10
+MAX_TEXT_SIZE = 5000
 
 # Initialize Amazon Comprehend client
 comprehend = boto3.client(
@@ -14,41 +21,18 @@ comprehend = boto3.client(
 )
 
 
-def fetch_and_filter_feed(feed_url, keywords):
-    feed = feedparser.parse(feed_url)
-    print(f"Fetched {len(feed.entries)} entries from {feed.feed.title}")
-    filtered_entries = []
-    for entry in feed.entries:
-        for keyword in keywords:
-            if keyword.lower() in entry.title.lower() or keyword.lower() in entry.summary.lower():
-                filtered_entries.append(entry)
-                break
-    print(f"Filtered {len(filtered_entries)} entries with keywords: {keywords}")
-    return filtered_entries
+def fetch_keyword_feed(keyword, language):
+    print(f"Fetching feed for keyword: {keyword}...")
+    feed = feedparser.parse(f"{RSS_GNEWS_SEARCH_URL}{keyword}&ceid={language}")
+    entries = feed.entries[:MAX_ARTICLES]
+    print(f"Fetched {len(entries)} entries\n")
 
-
-def analyze_sentiment(text):
-    response = comprehend.detect_sentiment(Text=text, LanguageCode='en')
-    return response['Sentiment']
-
-
-
-
-
-def recognize_entities(text):
-    response = comprehend.detect_entities(Text=text, LanguageCode='en')
-    return response['Entities']
-
-
-def extract_key_phrases(text):
-    response = comprehend.detect_key_phrases(Text=text, LanguageCode='en')
-    return response['KeyPhrases']
+    return entries
 
 
 def generate_alert(entry, sentiment, entities, key_phrases):
     alert = {
         "title": entry.title,
-        "summary": entry.summary,
         "link": entry.link,
         "sentiment": sentiment,
         "entities": [f'{entity["Type"]}: {entity["Text"]}' for entity in entities],
@@ -57,22 +41,46 @@ def generate_alert(entry, sentiment, entities, key_phrases):
     print(f"Alert generated: {json.dumps(alert, indent=2)}\n")
 
 
-def process_entries(entries):
+def process_entries(entries, language):
+    language_code = language.split(":")[1]
+
     for entry in entries:
         print(f"Processing entry: {entry.title}")
-        text = entry.title + " " + entry.summary
+        article = newspaper.Article(entry.link)
+        article.download()
 
-        sentiment = analyze_sentiment(text)
+        try:
+            article.parse()
+        except newspaper.article.ArticleException as e:
+            print(f"Error: {e}, skipping...\n")
+            continue
 
+        # Limit text size to avoid Comprehend API limits
+        text = article.text.encode('utf-8')[:MAX_TEXT_SIZE].decode('utf-8', 'ignore')
+
+        print(f"Analyzing sentiment for: {entry.title}")
+        sentiment = comprehend.detect_sentiment(Text=entry.title, LanguageCode=language_code)['Sentiment']
         if sentiment == 'NEGATIVE':
-            entities = recognize_entities(text)
-            key_phrases = extract_key_phrases(text)
+            print(f"ALERT: {entry.title}\n")
 
-            generate_alert(entry, sentiment, entities, key_phrases)
+            # TODO: Remove early return to process entities and key phrases
+            return
+            entities = comprehend.detect_entities(Text=text, LanguageCode=language_code)['Entities']
+            key_phrases = comprehend.detect_key_phrases(Text=text, LanguageCode=language_code)['KeyPhrases']
+
+            generate_alert(entry, text, sentiment, entities, key_phrases)
         else:
-            print(f"Sentiment is not negative: {sentiment}, skipping alert generation\n")
+            print(f"Sentiment: {sentiment}")
+            print("Skipping...\n")
 
 
 if __name__ == "__main__":
-    entries = fetch_and_filter_feed(RSS_FEED_URL, KEYWORDS)
-    process_entries(entries)
+    for keyword in KEYWORDS:
+        print(f"Processing keyword: {keyword}")
+
+        for language in LANGUAGES:
+            print(f"Processing language: {language}")
+
+            entries = fetch_keyword_feed(keyword, language)
+            process_entries(entries, language)
+            break
