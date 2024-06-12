@@ -1,82 +1,99 @@
-# Social Media Monitoring with Amazon Comprehend
+# Google Places reviews monitoring with Amazon Comprehend
 
 ## POC Objectives
 
-Validate the use of Amazon Comprehend for real-time social media monitoring to detect trends, popular topics, and crisis alerts.
+Validate the use of Amazon Comprehend for Google Places Reviews sentiment analysis to detect trends and get insights.
 
 ## Infra Architecture
 
 - Logical Components:
-  - User interface for data visualization and alerts.
-  - Backend for collecting and processing social media data.
+  - User interface for data visualization.
+  - Backend for collecting and processing reviews.
   - Amazon Comprehend for sentiment analysis and entity extraction.
   - Database for storing analyzed data.
 - Ports/Protocols:
-  - HTTP/HTTPS for API requests from social media platforms and the user interface.
-  - Security protocols for user authentication and authorization.
-- Type of Cloud:
-  - AWS for hosting services and utilizing Amazon Comprehend.
+  - HTTPS for API requests and user interface.
+- Type of Cloud: Software as a Service (SaaS).
+  - AWS for hosting services and utilizing Amazon Comprehend, as well as analysis visualization.
+  - Google Cloud for Google Places API.
 
 ## Scenario
 
 ### STEP 01
 
 ```text
-//given -> the user has configured the application to monitor specific keywords on Twitter
+//given -> the user has configured a list of places to monitor
 
-//when -> a new tweet containing one of the keywords is posted
+//when -> the user send a request to the application's backend to collect the latest reviews
 
-//then -> the application's backend collects the tweet and sends it to Amazon Comprehend for sentiment analysis
+//then -> the application's backend collects the latest reviews for the configured places
 ```
 
 ### STEP 02
 
 ```text
-//given -> the tweet is sent to Amazon Comprehend
+//given -> the application's backend has collected the latest reviews
 
-//when -> Amazon Comprehend performs sentiment analysis on the tweet
+//when -> the backend parses and sends the reviews to Amazon Comprehend for analysis
 
-//then -> the backend stores the sentiment analysis results (positive, negative, neutral, or mixed) in the database
+//then -> Amazon Comprehend performs entity recognition, sentiment analysis, and targeted sentiment analysis on the reviews
 ```
 
 ### STEP 03
 
 ```text
-//given -> the sentiment analysis results are stored
+//given -> the backend has received the analyzed reviews from Amazon Comprehend
 
-//when -> Amazon Comprehend performs entity recognition on the tweet
+//when -> the backend parses and stores the analyzed reviews in the database
 
-//then -> the backend stores the recognized entities (e.g., locations, dates, organizations) in the database
+//then -> the backend confirms to the user that the analyzed reviews have been stored
 ```
 
 ### STEP 04
 
 ```text
-//given -> the recognized entities are stored
+//given -> the user has requested to view the analyzed reviews
 
-//when -> Amazon Comprehend performs key phrase extraction on the tweet
+//when -> the user sends a request to the application's backend to view the analyzed reviews
 
-//then -> the backend stores the extracted key phrases in the database
+//then -> the backend retrieves the analyzed reviews from the database and displays them to the user
 ```
 
-### STEP 05
+## Components diagram
 
-```text
-//given -> the tweet is fully analyzed with sentiment, entities, and key phrases
+![Components diagram](./diagrams/components.png)
 
-//when -> the backend identifies a targeted negative sentiment with specific entities (e.g., organization name) and key phrases
+## Sequence diagram
 
-//then -> an alert is generated in the system
-```
+```mermaid
+sequenceDiagram
+    actor CLI
+    participant Lambda
+    participant GooglePlaces
+    participant Comprehend
+    participant S3
+    participant GlueCrawler
+    participant GlueDatabase
+    participant Athena
+    participant Quicksight
+    actor ManagementConsole
 
-### STEP 06
-
-```text
-//given -> an alert is generated
-
-//when -> the user accesses the user interface
-
-//then -> the user sees the new trends, popular topics, real-time alerts, and detailed insights including sentiment, entities, and key phrases
+    CLI->>Lambda: Send list of places to analyze
+    Lambda->>GooglePlaces: Fetch places reviews
+    GooglePlaces-->>Lambda: Return reviews
+    Lambda->>Comprehend: Send reviews for analysis
+    Comprehend-->>Lambda: Return analysis results
+    Lambda->>S3: Store analysis results
+    Lambda->>GlueCrawler: Trigger crawl
+    GlueCrawler->>S3: Access data
+    S3-->>GlueCrawler: Return data
+    GlueCrawler->>GlueDatabase: Store data as tables
+    ManagementConsole ->> Quicksight: Request dashboard
+    Quicksight->>Athena: Query Glue Database tables
+    Athena->>GlueDatabase: Execute query
+    GlueDatabase-->>Athena: Return query results
+    Athena-->>Quicksight: Provide query results
+    Quicksight-->>ManagementConsole: Display dashboard
 ```
 
 ## Cost
