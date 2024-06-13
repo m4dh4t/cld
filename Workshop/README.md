@@ -17,6 +17,8 @@ Validate the use of Amazon Comprehend for Google Places Reviews sentiment analys
   - AWS for hosting services and utilizing Amazon Comprehend, as well as analysis visualization.
   - Google Cloud for Google Places API.
 
+![Components diagram](./diagrams/components.png)
+
 ## Scenario
 
 ### STEP 01
@@ -58,10 +60,6 @@ Validate the use of Amazon Comprehend for Google Places Reviews sentiment analys
 
 //then -> the backend retrieves the analyzed reviews from the database and displays them to the user
 ```
-
-## Components diagram
-
-![Components diagram](./diagrams/components.png)
 
 ## Sequence diagram
 
@@ -131,7 +129,14 @@ Total Cost per Place per Month: $25 + (30 days * 1 * $0.8) = ~$49
 
 ### Cost Reduction
 
-//TODO
+In order to optimize costs for the project, several strategies could be implemented:
+
+- **Caching**: Implement caching mechanisms to store previously fetched reviews. This reduces the need to repeatedly query the Google Places API for the same data, thereby saving costs.
+- **Review Monitoring Frequency**:
+  - **Adjust Frequency**: Reduce the frequency of review monitoring based on business needs. For example, instead of daily monitoring, reviews could be fetched and analyzed weekly or bi-weekly, significantly reducing the number of API calls and processing costs.
+  - **Event-Driven Monitoring**: Implement event-driven monitoring where reviews are fetched based on specific triggers (e.g., a sudden increase in customer feedback) rather than on a fixed schedule.
+
+By implementing these cost-saving measures, the overall expenses for the project can be significantly reduced while maintaining the quality and effectiveness of the sentiment analysis and monitoring system. These strategies not only help in managing the budget but also ensure the sustainability and scalability of the project in the long term.
 
 ## Return of experience
 
